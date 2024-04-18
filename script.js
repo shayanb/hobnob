@@ -13,16 +13,15 @@ function generateQR() {
         text: url,
         width: 128,
         height: 128,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
+        colorDark: "#000000",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
     });
 
     let qrLink = document.getElementById('qrLink');
-    qrLink.value = url;
+    qrLink.href = url;
     let modal = document.getElementById('qrModal');
     modal.classList.remove('hidden');
-    modal.querySelector('.fade-in').classList.add('fade-in');
 
     document.getElementById('copyButton').onclick = function() {
         navigator.clipboard.writeText(url).then(() => {
@@ -31,41 +30,76 @@ function generateQR() {
     };
 
     document.getElementById('shareButton').onclick = function() {
-        shareQRAsImage(eventTitle, url);
+        if (navigator.share) {
+            navigator.share({
+                title: document.getElementById('eventTitle').value,
+                text: 'Check out this event!',
+                url: url,
+            }).then(() => console.log('Successful share'))
+              .catch((error) => console.log('Error sharing', error));
+        } else {
+            // Fallback to download the image if Web Share API is not available
+            downloadQRAsImage(eventTitle, url);
+        }
     };
 }
 
-function shareQRAsImage(title, url) {
-    // Create a new canvas to compose the final image
+function downloadQRAsImage(title, url) {
     let canvas = document.createElement('canvas');
     let context = canvas.getContext('2d');
-    canvas.width = 300;  // Set the width of the final image
-    canvas.height = 350; // Set the height to accommodate QR, title, and URL
+    canvas.width = 300;  // Adjust size as needed
+    canvas.height = 400; // Increased height to accommodate logo and link
 
-    // Get the QR Code canvas and draw it onto the new canvas
-    let qrCodeCanvas = document.querySelector('#qrCodeContainer canvas');
-    context.drawImage(qrCodeCanvas, 85, 50);  // Position the QR code within the new canvas
+    let logo = new Image(); // Define the logo image
 
-    // Adding the event title at the top
-    context.font = "18px Arial";
-    context.textAlign = "center";
-    context.fillText(title, canvas.width / 2, 30);
+    logo.onload = function() {
+        // Draw the logo at the top of the canvas
+        context.drawImage(logo, (canvas.width - 100) / 2, 10, 100, 100); // Adjust size as needed
 
-    // Adding the URL at the bottom
-    context.font = "14px Arial";
-    context.fillText(url, canvas.width / 2, canvas.height - 20);
+        // Draw the QR code below the logo
+        let qrCodeCanvas = document.querySelector('#qrCodeContainer canvas');
+        context.drawImage(qrCodeCanvas, (canvas.width - qrCodeCanvas.width) / 2, 120);
 
-    // Convert canvas to an image for download
-    canvas.toBlob(function(blob) {
-        let newUrl = URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = newUrl;
-        a.download = `${title}_QR.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
+        // Add shadow for the QR code (optional for visibility)
+        context.shadowColor = "rgba(0,0,0,0.5)";
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 4;
+        context.shadowBlur = 8;
+        context.drawImage(qrCodeCanvas, (canvas.width - qrCodeCanvas.width) / 2, 120); // Draw again to apply shadow
+
+        // Adding the event title
+        context.shadowColor = "rgba(0,0,0,0.3)"; // Text shadow for readability
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 2;
+        context.shadowBlur = 4;
+        context.font = "18px Arial";
+        context.textAlign = "center";
+        context.fillStyle = "#000"; // Text color
+        context.fillText(title, canvas.width / 2, 330);
+
+        // Adding the URL below the QR code
+        context.font = "14px Arial";
+        context.fillText(url, canvas.width / 2, 360);
+
+        // Remove shadow for subsequent drawings
+        context.shadowColor = "transparent";
+        context.shadowBlur = 0;
+
+        // Convert canvas to an image for download
+        canvas.toBlob(function(blob) {
+            let newUrl = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = newUrl;
+            a.download = `${title}_QR.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    };
+    logo.src = './logo.png';  // Path to your logo image
 }
+
+
 
 
 // To close the modal when clicking outside
