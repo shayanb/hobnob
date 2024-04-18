@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event QR Code Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Adding basic animations for modal */
+        .fade-in {
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="container p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg flex flex-col items-center">
+        <h1 class="text-xl font-semibold mb-4">Event QR Code Generator</h1>
+        <input type="text" id="eventTitle" placeholder="Enter the event title..." class="input bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
+        <button onclick="generateQR()" class="mt-4 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Generate QR Code</button>
+        <div id="qrModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden flex items-center justify-center">
+            <div class="bg-white p-4 rounded-lg max-w-xs mx-auto fade-in flex flex-col items-center">
+                <div id="qrCodeContainer" class="mb-4"></div>
+                <input type="text" id="qrLink" class="input bg-gray-200 border-2 border-gray-200 rounded w-full py-2 px-4 mb-4 text-gray-700 leading-tight" readonly>
+                <button id="copyButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2">Copy Link</button>
+                <button id="shareButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Share QR as Image</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
