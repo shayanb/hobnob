@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Favicon link -->
-    <title>HobNob - Anonymous Chat Room Generator</title>
+    <title>HobNob - Web3 Chat Room Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.17/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         /* Adding basic animations for modal */
         .fade-in {
@@ -18,24 +19,44 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
     <div class="container max-w-lg w-full bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
         <img src="logo.svg" alt="Hobnob Logo" class="mb-4 w-32 h-32"> <!-- Logo above the input box -->
-        <h1 class="text-xl font-semibold mb-4">Hobnob: Chat Room Generator</h1>
+        <h1 class="text-xl font-semibold mb-4">Hobnob - Chat Room Generator</h1>
         <input type="text" id="eventTitle" placeholder="Enter the event title..." class="input bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500">
         <button onclick="generateQR()" class="mt-4 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">Generate QR Code</button>
-        <div id="qrModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden flex items-center justify-center p-4">
-            <div class="bg-white p-4 rounded-lg max-w-sm mx-auto flex flex-col items-center">
-                <div id="qrCodeContainer" class="mb-4"></div>
-                <a id="qrLink" class="text-blue-500 hover:text-blue-700 mb-4 cursor-pointer" target="_blank">Open Chat</a>
-                <button id="copyButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-2 w-full">Copy Link</button>
-                <button id="shareButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full">Share QR as Image</button>
-            </div>
-        </div>
+        <p class="text-xs text-gray-500 mt-4">powered by web3 using <a href="https://bloc.im/" target="_blank">bloc.im</a></p>
     </div>
+    <div class="w-full max-w-lg mt-8">
+        <table class="table-auto w-full">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-4 py-2 text-left">Chatroom</th>
+                    <th class="px-4 py-2 text-left">Link</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-white border-b">
+                    <td class="px-4 py-2">Test</td>
+                    <td class="px-4 py-2"><a href="https://bloc.im/chat?tab=topics&id=Test" class="text-blue-500 hover:text-blue-700" target="_blank">Join</a></td>
+                </tr>
+                <tr class="bg-white border-b">
+                    <td class="px-4 py-2">Confessions</td>
+                    <td class="px-4 py-2"><a href="https://bloc.im/chat?tab=topics&id=Confessions" class="text-blue-500 hover:text-blue-700" target="_blank">Join</a></td>
+                </tr>
+                <tr class="bg-white">
+                    <td class="px-4 py-2">Hyperstitions</td>
+                    <td class="px-4 py-2"><a href="https://bloc.im/chat?tab=topics&id=Hyperstitions" class="text-blue-500 hover:text-blue-700" target="_blank">Join</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <footer class="w-full max-w-lg mt-4 text-center text-sm text-gray-600">
+        <p>bring into reality: <a href="https://github.com/shayanb/hobnob" class="text-blue-500 hover:text-blue-700" target="_blank" rel="noopener noreferrer"> <i class="fab fa-github"></i> Source Code</a></p>
+        <p><a href="https://discord.gg/aJq39UvX" class="text-blue-300 hover:text-blue-500" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-discord"></i> blocim Discord </a></p>
+
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
-
-
